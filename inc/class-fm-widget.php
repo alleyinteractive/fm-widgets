@@ -57,7 +57,7 @@ abstract class FM_Widget extends WP_Widget {
 			$markup_escaped
 		);
 		$markup_escaped = preg_replace(
-			'/(id\s*=\s*[\'"](?:wp-)?)' . preg_quote( $fm->get_element_id(), '/' ) . '/i',
+			'/((?:id|for)\s*=\s*[\'"](?:wp-)?)' . preg_quote( $fm->get_element_id(), '/' ) . '/i',
 			'$1' . esc_attr( $this->get_field_id( $fm->name ) ),
 			$markup_escaped
 		);
