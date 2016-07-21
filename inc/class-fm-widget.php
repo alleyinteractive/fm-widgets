@@ -108,6 +108,7 @@ abstract class FM_Widget extends WP_Widget {
 	public function enqueue_assets( $hook_suffix ) {
 		if ( 'widgets.php' === $hook_suffix ) {
 			wp_enqueue_script( 'fm-widget-js', FM_WIDGETS_URL . '/static/fm-widget.js', [ 'jquery', 'admin-widgets' ], '0.1' );
+			wp_enqueue_style( 'fm-widget-css', FM_WIDGETS_URL . '/static/fm-widget.css', [], '0.1' );
 		}
 	}
 }
