@@ -7,8 +7,6 @@ abstract class FM_Widget extends WP_Widget {
 
 	protected $fm;
 
-	protected $richtext_ids = [];
-
 	abstract public function group_name();
 
 	public function __construct( $id_base, $name, $widget_options = array(), $control_options = array() ) {
@@ -33,45 +31,9 @@ abstract class FM_Widget extends WP_Widget {
 
 	public function get_fm() {
 		if ( ! isset( $this->fm ) ) {
-			$this->add_hacks();
 			$this->fm = $this->fieldmanager_field();
 		}
 		return $this->fm;
-	}
-
-	protected function add_hacks() {
-		// echo "\n\n<!-- DEBUG: {$this->get_field_id( $this->group_name() )} -->\n\n";
-		add_action( 'wp_tiny_mce_init', [ $this, 'output_richtext_id_maps' ] );
-	}
-
-	public function output_richtext_id_maps() {
-		$map = $this->map_richtext_ids( $this->get_fm() );
-		?>
-		<script type="text/javascript">
-			var fm_widget_richtextareas = fm_widget_richtextareas || [];
-			<?php foreach ( $map as $ids ) : ?>
-				fm_widget_richtextareas.push( <?php echo wp_json_encode( $ids ) ?> );
-			<?php endforeach ?>
-		</script>
-		<?php
-	}
-
-	public function map_richtext_ids( $fm ) {
-		$map = [];
-		if ( $fm instanceof Fieldmanager_RichTextArea ) {
-			foreach ( $this->richtext_ids as $id ) {
-				$map[] = [
-					$fm->get_element_id(),
-					str_replace( $this->get_fm()->get_element_id(), $id, $fm->get_element_id() )
-				];
-			}
-		} elseif ( $fm instanceof Fieldmanager_Group ) {
-			foreach ( $fm->children as $field ) {
-				$map = array_merge( $map, $this->map_richtext_ids( $field ) );
-			}
-		}
-
-		return $map;
 	}
 
 	/**
@@ -83,9 +45,6 @@ abstract class FM_Widget extends WP_Widget {
 	 */
 	public function form( $data ) {
 		$fm = $this->get_fm();
-		$this->richtext_ids[] = esc_attr( $this->get_field_id( $fm->name ) );
-
-		// echo "\n\n<!-- DEBUG: {$this->get_field_id( $this->group_name() )} -->\n\n";
 
 		add_filter( 'fm_element_markup_start', [ $this, 'fix_array_positions' ], 10, 2 );
 
@@ -103,12 +62,6 @@ abstract class FM_Widget extends WP_Widget {
 			$markup_escaped
 		);
 		echo $markup_escaped;
-
-		// echo str_replace(
-		// 	[ 'name="' . $fm->get_form_name(), 'id="' . $fm->get_element_id() ],
-		// 	[ 'name="' . esc_attr( $this->get_field_name( $fm->name ) ), 'id="' . esc_attr( $this->get_field_id( $fm->name ) ) ],
-		// 	$markup_escaped
-		// );
 
 		remove_filter( 'fm_element_markup_start', [ $this, 'fix_array_positions' ], 10 );
 	}
