@@ -13,8 +13,11 @@ jQuery( function( $ ) {
 		}
 	});
 
-	$( document ).bind( 'widget-updated', function() {
+	$( document ).bind( 'widget-added widget-updated', function() {
 		$( document ).trigger( 'fm_collapsible_toggle' );
+		if ( fm && fm.init_display_if ) {
+			$( '.display-if' ).each( fm.init_display_if );
+		}
 	});
 
 });
