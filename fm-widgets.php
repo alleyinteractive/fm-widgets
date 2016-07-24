@@ -18,7 +18,16 @@ if ( class_exists( 'Fieldmanager_Field' ) && ! class_exists( 'FM_Widget' ) ) {
 }
 
 function fm_widgets_calculated_context( $context ) {
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && ! empty( $_POST['action'] ) && 'save-widget' === $_POST['action'] ) {
+	global $pagenow;
+
+	if (
+		'widgets.php' === $pagenow
+		|| (
+			defined( 'DOING_AJAX' ) && DOING_AJAX
+			&& ! empty( $_POST['action'] )
+			&& 'save-widget' === $_POST['action']
+		)
+	) {
 		return [ 'widget', null ];
 	}
 	return $context;
