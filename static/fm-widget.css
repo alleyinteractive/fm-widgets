@@ -2,11 +2,11 @@
 	margin: 15px 0;
 }
 
-.fm-wrapper.fm-repeatable-wrapper .fmjs-removable-element {
+.fmjs-removable > .fmjs-removable-element {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	margin: 0 -20px;
-	padding: 0 20px;
+	margin: 0 -40px 0 0;
+	padding: 0 40px 0 0;
 }
