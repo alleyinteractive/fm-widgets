@@ -7,7 +7,15 @@ abstract class FM_Widget extends WP_Widget {
 
 	protected $fm;
 
-	abstract public function group_name();
+	/**
+	 * Return the group name for the Fieldmanager fields. By default, this is the
+	 * widget's id_base.
+	 *
+	 * @return string
+	 */
+	public function group_name() {
+		return $this->id_base;
+	}
 
 	public function __construct( $id_base, $name, $widget_options = array(), $control_options = array() ) {
 		parent::__construct( $id_base, $name, $widget_options, $control_options );
@@ -105,6 +113,11 @@ abstract class FM_Widget extends WP_Widget {
 		return $fm->presave_all( $new_value, $old_value );
 	}
 
+	/**
+	 * Enqueue static assets for FM widgets.
+	 *
+	 * @param  string $hook_suffix The current page.
+	 */
 	public function enqueue_assets( $hook_suffix ) {
 		if ( 'widgets.php' === $hook_suffix ) {
 			wp_enqueue_script( 'fm-widget-js', FM_WIDGETS_URL . '/static/fm-widget.js', [ 'jquery', 'admin-widgets' ], '0.1' );
