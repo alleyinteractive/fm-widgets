@@ -1,5 +1,6 @@
 {
   "name": "alleyinteractive/fm-widgets",
+  "type": "wordpress-plugin",
   "authors": [
     {
       "name": "Matthew Boynes",
